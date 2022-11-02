@@ -4,6 +4,8 @@ const DELETE_TODO = "DELETE_TODO";
 const DELETE_TODO_DONE = "DELETE_TODO_DONE";
 const DONE_TODO = "DONE_TODO";
 const WORKING_TODO = "WORKING_TODO";
+const GET_TODO_DONE_ID = "GET_TODO_DONE_ID";
+const GET_TODO_ID = "GET_TODO_ID";
 
 // Action Creator
 export const addTodo = (payload) => {
@@ -21,11 +23,18 @@ export const doneTodo = (payload) => {
 export const workingTodo = (payload) => {
   return { type: WORKING_TODO, payload };
 };
+export const getTodoDoneId = (payload) => {
+  return { type: GET_TODO_DONE_ID, payload };
+};
+export const getTodoId = (payload) => {
+  return { type: GET_TODO_ID, payload };
+};
 
 // initial State
 const initialState = {
   todos: [],
-  doneTodos: []
+  doneTodos: [],
+  getDoneTodo: null,
 };
 
 // Reducer
@@ -49,7 +58,6 @@ const todos = (state = initialState, action) => {
         case DONE_TODO :
             const deleteDone = state.todos.filter((todo) => todo.id !== action.payload.id)
             const editTodo = state.todos.filter((todo) => todo.id === action.payload.id)
-            console.log(editTodo)
             return {
                 ...state,
                 todos: deleteDone,
@@ -58,12 +66,23 @@ const todos = (state = initialState, action) => {
         case WORKING_TODO :
             const cancelDone = state.doneTodos.filter((todo) => todo.id !== action.payload.id)
             const workTodo = state.doneTodos.filter((todo) => todo.id === action.payload.id)
-            console.log(workTodo)
             return {
                 ...state,
                 todos: [...state.todos, workTodo[0]],
                 doneTodos: cancelDone,
             };
+        case GET_TODO_DONE_ID :
+            const todoDone = state.doneTodos.filter(todo => todo.id === action.payload.id)
+            return {
+                ...state,
+                getDoneTodo: todoDone
+            }
+        case GET_TODO_ID :
+            const todoUndone = state.todos.filter(todo => todo.id === action.payload.id)
+            return {
+                ...state,
+                getDoneTodo: todoUndone
+            }
         default:
             return state;
     }

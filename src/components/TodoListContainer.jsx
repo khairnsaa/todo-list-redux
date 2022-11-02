@@ -1,32 +1,33 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { deleteTodo, doneTodo } from "../redux/modules/todos";
+import { deleteTodo, doneTodo, getTodoId } from "../redux/modules/todos";
 
 const TodoListContainer = () => {
     const { todos } = useSelector((state) => state.todos);
     const dispatch = useDispatch()
-    // const handleDelete = (e) => {
-    //     e.preventDefault()
+    const navigate = useNavigate()
 
-    //     useDispatch(
-    //         deleteTodo({id: })
-    //     )
-    // }
+    const toDetailPage = (id) => {
+        navigate(`/todo/${id}`)
+        dispatch(getTodoId({id: id}))
+    }
+
     return (
         <Container>
             <h1>Working On It!! 🔥</h1>
             <StTodos>
-                {console.log(todos)}
+
                 {todos.map((todo) => (
                     <StTodo key={todo.id}>
                     <TodoTitle>{todo.title}</TodoTitle>
-                    <TodoTitle>{todo.content}</TodoTitle>
+                    <TodoDetail>{todo.content}</TodoDetail>
                     <CtaWrap>
                         <DelBtn onClick={() => dispatch(deleteTodo({id: todo.id}))}>delete</DelBtn>
                         <DoneBtn onClick={() => dispatch(doneTodo({id: todo.id}))}>done</DoneBtn>
                     </CtaWrap>
-                    <DetailBtn>Detail Todo</DetailBtn>
+                    <DetailBtn onClick={() => toDetailPage(todo.id)}>Detail Todo</DetailBtn>
                     </StTodo>
                 ))}
             </StTodos>
@@ -40,7 +41,7 @@ export default TodoListContainer;
 
 const Container = styled.div`
     padding: 0.5rem 1rem;
-    border-right: 0.3rem dashed #1c1c1c;
+    border-right: 0.2rem dashed #1c1c1c;
 `;
 const StTodos = styled.div`
     display: flex;
@@ -59,6 +60,11 @@ const StTodo = styled.div`
 
 const TodoTitle = styled.h1`
     font-weight: 700;
+    text-transform: capitalize;
+    margin: 0;
+`;
+
+const TodoDetail = styled.p`
     text-transform: capitalize;
     margin: 0;
 `;

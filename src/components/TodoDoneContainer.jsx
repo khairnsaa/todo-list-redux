@@ -1,25 +1,32 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { deleteTodoDone, workingTodo } from "../redux/modules/todos";
+import { deleteTodoDone, getTodoDoneId, workingTodo } from "../redux/modules/todos";
 
 const TodoDoneContainer = () => {
     const { doneTodos } = useSelector((state) => state.todos);
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const toDetailPage = (id) => {
+        navigate(`/todo/${id}`)
+        dispatch(getTodoDoneId({id: id}))
+    }
+
     return (
         <div>
             <h1>Done 🎉</h1>
             <StTodos>
-                {console.log(doneTodos)}
                 {doneTodos.map((todo) => (
                     <StTodo key={todo.id}>
                     <TodoTitle>{todo.title}</TodoTitle>
-                    <TodoTitle>{todo.content}</TodoTitle>
+                    <TodoDetail>{todo.content}</TodoDetail>
                     <CtaWrap>
                         <DelBtn onClick={() => dispatch(deleteTodoDone({id: todo.id}))}>delete</DelBtn>
-                        <DoneBtn onClick={() => dispatch(workingTodo({id: todo.id}))}>done</DoneBtn>
+                        <DoneBtn onClick={() => dispatch(workingTodo({id: todo.id}))}>Cancel</DoneBtn>
                     </CtaWrap>
-                    <DetailBtn>Detail Todo</DetailBtn>
+                    <DetailBtn onClick={() =>toDetailPage(todo.id)}>Detail Todo</DetailBtn>
                     </StTodo>
                 ))}
             </StTodos>
@@ -46,6 +53,11 @@ const StTodo = styled.div`
 
 const TodoTitle = styled.h1`
     font-weight: 700;
+    text-transform: capitalize;
+    margin: 0;
+`;
+
+const TodoDetail = styled.p`
     text-transform: capitalize;
     margin: 0;
 `;

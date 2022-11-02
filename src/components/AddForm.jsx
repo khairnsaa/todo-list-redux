@@ -25,24 +25,27 @@ const AddForm = () => {
 
     return (
         <StFormContainer>
-        <form onSubmit={onSubmitHandler}>
-            <label>I Wanna Do....</label>
-            <StInput
-            type="text"
-            value={title}
-            onChange={(e) => {
-                setTitle(e.target.value);
-            }}
-            />
-            <StInput
-            type="text"
-            value={content}
-            onChange={(e) => {
-                setContent(e.target.value);
-            }}
-            />
-            <StButton>Add</StButton>
-        </form>
+            <FormTag onSubmit={onSubmitHandler}>
+                <Formdiv>
+                    <StInput
+                    type="text"
+                    value={title}
+                    placeholder="title"
+                    onChange={(e) => {
+                        setTitle(e.target.value);
+                    }}
+                    />
+                    <StInput
+                    type="text"
+                    value={content}
+                    placeholder="description"
+                    onChange={(e) => {
+                        setContent(e.target.value);
+                    }}
+                    />
+                </Formdiv>
+                <StButton>Add</StButton>
+            </FormTag>
         </StFormContainer>
     );
 };
@@ -50,26 +53,36 @@ const AddForm = () => {
 export default AddForm;
 
 const StFormContainer = styled.div`
-  display: flex;
-  gap: 24px;
-  padding: 30px;
+  padding: 0.5rem 0;
 `;
+
+const FormTag =  styled.form`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+    padding: 0;
+`;
+
+const Formdiv =  styled.div`
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+`;
+
+
 
 const StButton = styled.button`
   border: none;
   background-color: #eee;
-  height: 25px;
   cursor: pointer;
-  width: 120px;
-  border-radius: 12px;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
 `;
 
 const StInput = styled.input`
   border: 1px solid #eee;
-  margin: 0 24px;
-  height: 25px;
-  width: 300px;
-  border-radius: 12px;
+  border-radius: 0.5rem;
   outline: none;
-  padding: 0 10px;
+  padding: 0.5rem 1rem;
 `;
